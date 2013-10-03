@@ -57,6 +57,10 @@ if (process.argv.indexOf("--watch-frontend")) {
   script.stdout.on('data', function (data) {
     process.stdout.write(data);
   });
+  process.once('SIGUSR2', function () {
+    script.kill();
+    process.kill(process.pid, 'SIGUSR2');
+  });
 }
 
 var port = process.env.PORT || 1337;
