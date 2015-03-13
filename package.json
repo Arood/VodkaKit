@@ -1,8 +1,12 @@
 {
   "name": "vodkakit",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Boilerplate framework for NodeJS web applications",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arood/vodkakit.git"
+  },
   "bin": {
     "vodkakit": "bin/vodkakit.js"
   },

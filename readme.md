@@ -2,7 +2,7 @@
 
 VodkaKit is a boilerplate/template/starter kit for [Node.js](http://nodejs.org), powered by popular frameworks like [Express](http://expressjs.com). I made it after I had built a few web projects and found a file structure I liked. In the latest iteration, it also allows your to create new projects quickly with a command line tool.
 
-<p style="text-align: center"><img src="https://raw.github.com/Arood/VodkaKit/master/vodkakit.png" height="400" style="height: 400px" /></p>
+<p style="text-align: center"><img src="https://cdn.rawgit.com/Arood/VodkaKit/master/vodkakit.png" height="400" style="height: 400px" /></p>
 
 ## Features
 
@@ -155,9 +155,30 @@ The [HTTP](https://nodejs.org/api/http.html#http_http_createserver_requestlisten
 
 Availability: preListen
 
+### this.disableCORS
+
+By default, VodkaKit will automatically enable [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing), which enables hotlinking and such. If you want to disable this, or add your own CORS-headers, set this property to `true` so VodkaKit doesn't enable it.
+
+Availability: configuration
+
+### this.disableGulp
+
+VodkaKit includes some pre-defined tasks for handling JavaScript and CSS minifications. If you want to handle this yourself, set this property to `true` to prevent VodkaKit from creating these Gulp-tasks.
+
+Availability: configuration
+
 ### this.javascripts
 
 `(string)` Path to frontend JavaScripts. When undefined it defaults to `frontend/javascripts/`
+
+Availability: configuration
+
+### this.mongodb
+
+`(object)` If defined, VodkaKit will setup a MongoJS-instance to `this.db`. The property should be an object with the following keys:
+
+* `host` - Hostname to the MongoDB-server
+* `collections` - An array of collection-names you want to use.
 
 Availability: configuration
 
@@ -175,9 +196,18 @@ Availability: configuration
 
 Availability: configuration
 
-### this.sessions
+### this.session
 
 An [express-session](https://github.com/expressjs/session) object that you can use if you want to use another session store than Redis.
+
+Availability: configuration
+
+### this.sessions
+
+If you want to use Redis, enter the session configuration here.
+
+* `redis` - Configuration for Redis
+* `secret` - Session hash secret
 
 Availability: configuration
 
