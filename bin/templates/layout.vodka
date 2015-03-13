@@ -1,0 +1,10 @@
+!!! 5
+html
+  head
+    meta(charset="utf8")
+    title #{title}
+    link(rel="stylesheet", href="/style.css")
+  body
+    .content
+      block content
+    script(src="/script.js")

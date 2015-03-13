@@ -1,0 +1,23 @@
+require('vodkakit')(function(start) {
+
+  this.mongodb = {
+    host: process.env.MONGOLAB_URI || 'mongodb://localhost/mysite',
+    collections: [
+      'posts',
+      'comments'
+    ]
+  };
+
+  this.sessions = {
+    redis: {
+      host: "localhost",
+      db: 1
+    },
+    secret: "poop"
+  };
+  
+  this.app.locals.title = "My website";
+
+  start();
+
+});
