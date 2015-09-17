@@ -2,7 +2,9 @@
 
 VodkaKit is a boilerplate/template/starter kit for [Node.js](http://nodejs.org), powered by popular frameworks like [Express](http://expressjs.com). I made it after I had built a few web projects and found a file structure I liked. In the latest iteration, it also allows your to create new projects quickly with a command line tool.
 
-<p style="text-align: center"><img src="https://cdn.rawgit.com/Arood/VodkaKit/master/vodkakit.png" height="400" style="height: 400px" /></p>
+<p style="text-align: center; max-width: 100%"><img src="https://cdn.rawgit.com/Arood/VodkaKit/master/vodkakit.jpg" /></p>
+
+If you're interested in a [HAPI](http://hapijs.com) powered variant, check out [BeerKit](https://github.com/asayuki/BeerKit) made by my friend Erik.
 
 ## Features
 
