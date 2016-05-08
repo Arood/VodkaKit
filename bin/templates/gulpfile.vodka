@@ -1,0 +1,37 @@
+var gulp = require('gulp'),
+    autoprefixer = require('gulp-autoprefixer'),
+    cssGlobbing = require('gulp-css-globbing'),
+    sass = require('gulp-sass'),
+    include = require("gulp-include"),
+    uglify = require('gulp-uglify'),
+    util = require('util');
+
+var css = {
+  watch: 'frontend/stylesheets/**/*.sass',
+  build: 'frontend/stylesheets/*.sass'
+};
+
+var js = {
+  watch: ['frontend/javascripts/**/*.js','!frontend/javascripts/**/_*.js'],
+  build: 'frontend/javascripts/**/*.js'
+};
+
+gulp.task('styles', function() {
+  util.log("Detected stylesheet changes, building");
+  return gulp.src(css.build)
+    .pipe(cssGlobbing({ extensions: ['.css', '.scss', '.sass'] }))
+    .pipe(sass({ indentedSyntax: true, outputStyle: 'compressed' }))
+    .pipe(autoprefixer())
+    .pipe(gulp.dest('assets'))
+})
+
+gulp.task('scripts', function() {
+  util.log("Detected JavaScript changes, building");
+  return gulp.src(js.build)
+    .pipe(include())
+    .pipe(uglify())
+    .pipe(gulp.dest('assets'));
+});
+
+gulp.watch(js.watch, ['scripts']);
+gulp.watch(css.watch, ['styles']);

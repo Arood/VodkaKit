@@ -15,8 +15,11 @@ require('vodkakit')(function(start) {
     },
     secret: "poop"
   };
-  
+
   this.app.locals.title = "My website";
+
+  // Uncomment if you want to use the gulp-file
+  // require('./Gulpfile.js');
 
   start();
 

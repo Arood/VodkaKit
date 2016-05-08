@@ -9,7 +9,19 @@ var app = require('commander'),
 
 var packagejson = {};
 
-var createVodkaKit = function() {
+var promptGulp = function() {
+  inquirer.prompt([
+    {
+      type: "confirm",
+      name: "gulp",
+      message: "Would you like to include a boilerplate Gulpfile?",
+    }
+  ]).then(function( answers ) {
+    createVodkaKit(answers.gulp);
+  });
+};
+
+var createVodkaKit = function(addgulp) {
   if (!packagejson.scripts) { packagejson.scripts = {} };
   packagejson.scripts.start = "NODE_ENV=development ./node_modules/nodemon/bin/nodemon.js --ignore assets --ignore frontend index.js";
   packagejson.scripts.production = "NODE_ENV=production ./node_modules/nodemon/bin/nodemon.js --ignore assets --ignore frontend index.js";
@@ -34,6 +46,17 @@ var createVodkaKit = function() {
   fs.writeFileSync(dirname+"/frontend/javascripts/script.js", "");
   fs.writeFileSync(dirname+"/frontend/stylesheets/style.sass", "");
 
+  if (addgulp) {
+    fs.writeFileSync(dirname+"/Gulpfile.js", fs.readFileSync(__dirname+"/templates/gulpfile.vodka"));
+  }
+
+  packagejson.dependencies.gulp = "^3.8.9";
+  packagejson.dependencies['gulp-autoprefixer'] = "^1.0.1";
+  packagejson.dependencies['gulp-css-globbing'] = "^0.1.7";
+  packagejson.dependencies['gulp-include'] = "^2.1.0";
+  packagejson.dependencies['gulp-sass'] = "^2.1.0";
+  packagejson.dependencies['gulp-uglify'] = "^1.0.1";
+
   fs.writeFileSync(dirname+"/package.json", JSON.stringify(packagejson, null, 2));
 
   console.log("\nDone!".white.bold+" The last step is to install required dependencies by running "+"npm install".underline+". \nThen start your server by running "+"npm start".underline+".");
@@ -43,7 +66,7 @@ var createVodkaKit = function() {
 app
   .version(require('../package.json').version)
   .description('VodkaKit provides a simple boilerplate web framework for NodeJS, based on Express and several other modules.');
-  
+
 app
   .command('init')
   .description('creates a new project in the current directory')
@@ -58,10 +81,10 @@ app
           name: "orly",
           message: "continue?",
         }
-      ], function( answers ) {
+      ]).then(function( answers ) {
         if (answers.orly) {
           packagejson = JSON.parse(fs.readFileSync(dirname + "/package.json"));
-          createVodkaKit();
+          promptGulp();
         }
       });
     } else {
@@ -73,7 +96,7 @@ app
           name: "orly",
           message: "continue?",
         }
-      ], function( answers ) {
+      ]).then(function( answers ) {
         if (answers.orly) {
           inquirer.prompt([
             {
@@ -103,14 +126,14 @@ app
               name: "license",
               message: "license"
             }
-          ], function( answers ) {
+          ]).then(function( answers ) {
             packagejson = answers;
-            createVodkaKit();
+            promptGulp();
           });
         }
       });
     }
-  
+
   });
 
 app.parse(process.argv);

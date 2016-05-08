@@ -9,7 +9,7 @@ If you're interested in a [HAPI](http://hapijs.com) powered variant, check out [
 ## Features
 
 * (M)VC-friendly file structure, with distinct division between frontend and backend code.
-* Frontend JavaScripts and CSS are automatically compiled and minified using [Gulp](http://gulpjs.com).
+* Includes a boilerplate for compiling JavaScript and SASS using [Gulp](http://gulpjs.com).
 * Automatic server restart when backend code changes, thanks to [Nodemon](https://github.com/remy/nodemon).
 * Common settings are done automatically (like MongoDB and Redis sessions), but can be disabled if you want to add your own modifications.
 * Includes a CLI-tool to quickly create new projects.
@@ -83,17 +83,15 @@ Override with: `this.views` (string)
 
 ### JavaScripts
 
-Frontend JavaScripts are stored here, and will be concatenated to the assets-directory when the server is running. In production mode it will also be minified. The path is handled by Gulp and therefore supports globbing too.
+Frontend JavaScripts are stored here. If you use the optional Gulpfile, VodkaKit will compile JavaScripts in here and put the files that doesn't start with an underscore in the assets-directory.
 
-Default path: `frontend/javascripts/**/*.js`
-Override with: `this.javascripts` (string)
+Default path: `frontend/javascripts/`
 
 ### Stylesheets
 
-By default VodkaKit works with Sass, which will be compiled into the assets-directory. In production mode it will also be minified. The path is handled by Gulp and therefore supports globbing too.
+If you use the optional Gulpfile, VodkaKit will compile SASS-files stored in this directory and put them in the assets-directory.
 
-Default path: `frontend/stylesheets/**/*.sass`
-Override with: `this.stylesheets` (string)
+Default path: `frontend/stylesheets/`
 
 ## Controllers
 
@@ -145,6 +143,12 @@ Availability: configuration, preListen, controllers
 
 Availability: configuration
 
+### this.busboy
+
+VodkaKit uses [busboy](https://www.npmjs.com/package/express-busboy) to handle POST data. You can override the busboy configuration by setting this property, or set it to `null` if you want to disable it completely.
+
+Availability: configuration
+
 ### this.db
 
 If you choose to setup MongoDB via VodkaKit, this property will contain the MongoJS-instance.
@@ -160,18 +164,6 @@ Availability: preListen
 ### this.disableCORS
 
 By default, VodkaKit will automatically enable [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing), which enables hotlinking and such. If you want to disable this, or add your own CORS-headers, set this property to `true` so VodkaKit doesn't enable it.
-
-Availability: configuration
-
-### this.disableGulp
-
-VodkaKit includes some pre-defined tasks for handling JavaScript and CSS minifications. If you want to handle this yourself, set this property to `true` to prevent VodkaKit from creating these Gulp-tasks.
-
-Availability: configuration
-
-### this.javascripts
-
-`(string)` Path to frontend JavaScripts. When undefined it defaults to `frontend/javascripts/`
 
 Availability: configuration
 
@@ -219,8 +211,11 @@ Callback used to start the web server after configuration is complete.
 
 Availability: configuration
 
-### this.stylesheets
+## Changelog
 
-`(string)` Path to frontend stylesheets. When undefined it defaults to `frontend/stylesheets/`
+### 3.2
 
-Availability: configuration
+- Updated a bunch of dependencies.
+- Replaced `body-parser` with `express-busboy`, to enable file uploads out of the box.
+- Removed Gulp from the "core" and made it an optional Gulpfile instead.
+- Removed an unnecessary reference to the deprecated `sys`, which wasn't even used...
