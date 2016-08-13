@@ -12,8 +12,8 @@ var css = {
 };
 
 var js = {
-  watch: ['frontend/javascripts/**/*.js','!frontend/javascripts/**/_*.js'],
-  build: 'frontend/javascripts/**/*.js'
+  watch: 'frontend/javascripts/**/*.js',
+  build: ['frontend/javascripts/**/*.js','!frontend/javascripts/**/_*.js']
 };
 
 gulp.task('styles', function() {
