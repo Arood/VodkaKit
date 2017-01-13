@@ -29,6 +29,7 @@ var createVodkaKit = function(addgulp) {
   if (!packagejson.dependencies) { packagejson.dependencies = {} };
   packagejson.dependencies.vodkakit = "^3.0.0";
   packagejson.dependencies.nodemon = "^1.3.7";
+  packagejson.dependencies.pug = "^2.0.0-beta6";
 
   fs.mkdirSync(dirname+"/assets");
   fs.mkdirSync(dirname+"/backend");
@@ -38,24 +39,25 @@ var createVodkaKit = function(addgulp) {
   fs.mkdirSync(dirname+"/frontend/stylesheets");
   fs.mkdirSync(dirname+"/frontend/views");
 
-  fs.writeFileSync(dirname+"/index.js", fs.readFileSync(__dirname+"/templates/index.vodka"));
   fs.writeFileSync(dirname+"/backend/routes/index.js", fs.readFileSync(__dirname+"/templates/route.vodka"));
-  fs.writeFileSync(dirname+"/frontend/views/index.jade", fs.readFileSync(__dirname+"/templates/view.vodka"));
-  fs.writeFileSync(dirname+"/frontend/views/layout.jade", fs.readFileSync(__dirname+"/templates/layout.vodka"));
+  fs.writeFileSync(dirname+"/frontend/views/index.pug", fs.readFileSync(__dirname+"/templates/view.vodka"));
+  fs.writeFileSync(dirname+"/frontend/views/layout.pug", fs.readFileSync(__dirname+"/templates/layout.vodka"));
 
   fs.writeFileSync(dirname+"/frontend/javascripts/script.js", "");
   fs.writeFileSync(dirname+"/frontend/stylesheets/style.sass", "");
 
+  var indexFile = fs.readFileSync(__dirname+"/templates/index.vodka", "utf8");
   if (addgulp) {
     fs.writeFileSync(dirname+"/Gulpfile.js", fs.readFileSync(__dirname+"/templates/gulpfile.vodka"));
+    packagejson.dependencies.gulp = "^3.8.9";
+    packagejson.dependencies['gulp-autoprefixer'] = "^1.0.1";
+    packagejson.dependencies['gulp-css-globbing'] = "^0.1.7";
+    packagejson.dependencies['gulp-include'] = "^2.1.0";
+    packagejson.dependencies['gulp-sass'] = "^2.1.0";
+    packagejson.dependencies['gulp-uglify'] = "^1.0.1";
+    indexFile = indexFile.replace("start();", "require('./Gulpfile.js');\n\n  start();");
   }
-
-  packagejson.dependencies.gulp = "^3.8.9";
-  packagejson.dependencies['gulp-autoprefixer'] = "^1.0.1";
-  packagejson.dependencies['gulp-css-globbing'] = "^0.1.7";
-  packagejson.dependencies['gulp-include'] = "^2.1.0";
-  packagejson.dependencies['gulp-sass'] = "^2.1.0";
-  packagejson.dependencies['gulp-uglify'] = "^1.0.1";
+  fs.writeFileSync(dirname+"/index.js", indexFile, "utf8");
 
   fs.writeFileSync(dirname+"/package.json", JSON.stringify(packagejson, null, 2));
 

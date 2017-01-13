@@ -3,7 +3,7 @@ module.exports = function() {
   return {
     "GET": {
       "/": function(req, res) {
-        res.render("index.jade");
+        res.render("index.pug");
       }
     }
   };
